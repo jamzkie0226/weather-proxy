@@ -2,15 +2,18 @@ name: Weather Proxy
 
 on:
   schedule:
-    - cron: "*/10 * * * *"   # updates every 10 minutes
+    - cron: "*/10 * * * *"
   workflow_dispatch:
 
 jobs:
   update-weather:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Fetch WeatherAPI
         run: |
@@ -18,8 +21,8 @@ jobs:
 
       - name: Commit & Push
         run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add weather.json
           git commit -m "Update weather" || echo "No changes"
           git push
