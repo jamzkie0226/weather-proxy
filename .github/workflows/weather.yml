@@ -2,22 +2,23 @@ name: Weather Proxy
 
 on:
   schedule:
-    - cron: "*/10 * * * *"
+    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 jobs:
   update-weather:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Fetch WeatherAPI
         run: |
-          curl "https://api.weatherapi.com/v1/current.json?key=49b2f6117897475e850194206263108&q=Hendon&aqi=no" -o weather.json
+          curl "https://api.weatherapi.com/v1/current.json?key=49b2f6117897475e850194206263108&q=London&aqi=no" -o weather.json
 
       - name: Commit & Push
         run: |
